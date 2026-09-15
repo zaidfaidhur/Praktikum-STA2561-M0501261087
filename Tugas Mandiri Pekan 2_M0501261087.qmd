@@ -1,0 +1,327 @@
+---
+title: "Tugas Mandiri"
+author: "Zaid Faidhu Rabbani"
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-title: "Daftar Isi"
+    toc-depth: 3
+    number-sections: false
+    theme:
+      light: flatly
+      dark: darkly
+    css: custom.css
+    highlight-style: github
+    code-fold: false
+    code-tools: false
+    smooth-scroll: true
+    fig-align: center
+    linkcolor: "#5c5c5c"
+    fig-cap-location: bottom
+    df-print: paged
+    embed-resources: true  
+    toc-expand: true
+    code-copy: true
+    code-overflow: wrap
+    code-block-bg: "grey"
+    code-block-border-left: "#5c5c5c"
+editor: visual
+---
+
+## Soal 1. Pseudocode dan Flowchart
+
+Buatlah pseudocode dan flowchart untuk menentukan apakah sebuah bilangan bulat yang dimasukkan pengguna merupakan bilangan genap atau ganjil.
+
+```         
+Mulai
+Input bilangan
+sisa <- bilangan MOD 2
+Jika sisa = 0 maka
+    Output "Bilangan Genap"
+Selain itu maka
+    Output "Bilangan Ganjil"
+Selesai
+```
+
+Untuk flowchartnya sebagai berikut
+
+![](images/flowchart.drawio.png){fig-align="center"}
+
+## Soal 2. Jenis Struktur Algoritma
+
+Perhatikan Algoritma berikut.
+
+```         
+Mulai
+Input panjang
+Input lebar
+luas <- panjang * lebar
+keliling <- 2 * (panjang + lebar)
+Output luas
+Output keliling
+Selesai
+```
+
+Jelaskan jenis struktur algoritma yang digunakan dan berikan alasannya?
+
+::: {.callout-note icon="false"}
+> Algoritma diatas menggunakan struktur algoritma sekuensial (sequential structure).Dengan alasan, setiap instruksi (input panjang, input lebar, hitung luas, hitung keliling, output luas, output keliling) dijalankan secara berurutan dari atas ke bawah tanpa ada percabangan (branching/if) maupun perulangan (looping), setiap baris hanya dieksekusi satu kali sesuai urutannya.
+:::
+
+## Soal 3. Mengubah Algoritama menjadi Pseudocode
+
+Buatlah algoritma untuk menentukan kategori nilai mahasiswa dengan ketentuan:
+
+- Nilai ≥ 80 → `"Baik"`
+
+- Nilai 60–79 → `"Cukup"`
+
+- Nilai \< 60 → `"Kurang"`
+
+Tuliskan algoritma tersebut dalam bentuk pseudocode.
+
+```         
+Mulai
+Input Nilai Mahasiswa
+Jika Nilai >= 80 maka
+  Output "Baik"
+Jika Nilai >= 60 maka
+  Output "Cukup"
+Selain itu
+  Output "Kurang"
+Selesai
+```
+
+## Soal 4. Operasi pada Vektor
+
+Buat sebuah vektor berisi bilangan genap dari 2 sampai 20. Hitung jumlah elemen dan rata-ratanya.
+
+```{r}
+no4 <- seq(2, 20, by = 2)
+no4
+```
+
+Menghitung jumlah elemen vektor menggunakan fungsi `length()`
+
+```{r}
+total_elemen_no4 <- length(no4)
+```
+
+Menghitung rata-rata vektor menggunakan fungsi `mean()`
+
+```{r}
+rata_rata_no4 <- mean(no4)
+rata_rata_no4
+```
+
+## Soal 5. Operasi pada Matriks
+
+Buat matriks 3×3 berisi angka 1 sampai 9. Tampilkan:
+
+- Transposenya
+
+- Determinannya
+
+```{r}
+matriks_no5 <- matrix(1:9, nrow = 3, byrow = TRUE)
+matriks_no5
+```
+
+Mengitung transpose menggunakan fungsi `t(matriksnya)`
+
+```{r}
+transpose_no5 <- t(matriks_no5)
+transpose_no5
+```
+
+Mengitung determinannya menggunakan fungsi `det(matriksnya)`
+
+```{r}
+determinan_no5 <- det(matriks_no5)
+determinan_no5
+```
+
+::: callout-note
+> Matriks berisi 1–9 secara berurutan bersifat *singular* (kolom/baris saling berkelipatan linear), sehingga **determinannya = 0**.
+:::
+
+## Soal 6. Operasi pada Character
+
+Diketahui string:
+
+`x <- "Pemrograman Statistik R"`
+
+- Hitung jumlah karakternya
+
+- Ambil kata `"Statistik"` dengan fungsi substring
+
+```{r}
+x <- "Pemrograman Statistik R"
+```
+
+Menghitung jumlah karakter dengan fungsi `nchar()`
+
+```{r}
+total_karakterx <- nchar(x)
+total_karakterx
+```
+
+Ambil hanya kata "Statistik" dari objek `x`
+
+```{r}
+kata_statistik <- substr(x, start = 13, stop = 21)
+kata_statistik
+```
+
+::: callout-note
+> Fungsi `nchar()` untuk menghitung jumlah karakter termasuk `spasi, titik(.), dll`, sedangkan `substr()` untuk memotong/mengambil sebagian karakter dari sebuah teks dengan posisi awal ditentukan oleh `start =` dan posisi akhir oleh `stop =`.
+:::
+
+## Soal 7. Dataframe
+
+Buat `data.frame` dengan kolom: `Nama`, `Umur`, `Nilai`. Isi dengan minimal 3 baris data. Tampilkan hanya baris dengan `Nilai >= 80`.
+
+```{r}
+no7 <- data.frame(
+  Nama = c("Ahmad", "Bara", "Cindy"),
+  Umur = c(21, 22, 23),
+  Nilai= c(99, 80, 75)
+)
+
+no7_lulus <- no7[no7$Nilai >= 80, ]
+no7_lulus
+```
+
+## Soal 8. Operasi pada Vektor
+
+DIberikan vektor:
+
+```         
+a <- 1:8
+b <- c(2, 4)
+```
+
+Lakukan `a * b` dan jelaskan kenapa hasilnya demikian.
+
+```{r}
+a <- 1:8
+b <- c(2, 4)
+
+no8 <- a * b
+no8
+```
+
+R menggunakan aturan *recycling* (daur ulang vektor), contoh seperti di soal no 8, karena panjang vektor `b` yaitu 2 lebih pendek dibanding vektor `a` yaitu 8, maka elemen `b` akan diulang secara berurutan hingga panjangnya menyamai vektor `a`. Selanjutnya perkalian dilakukan elemen per elemen `(a[1]*b[1], dst)`
+
+## Soal 9. Fungsi `If` dan `Ifelse`
+
+Buat kode yang membaca satu nilai bilangan bulat `x`. Jika:
+
+- `x > 0` cetak “positif”
+
+- `x < 0` cetak “negatif”
+
+- `x = 0` cetak “nol”
+
+```{r}
+x <- -17
+
+if (x > 0) {
+  print("positif")
+} else if (x < 0) {
+  print("negatif")
+} else {
+  print("nol")
+}
+```
+
+::: callout-note
+> Angka `-17` hanya sebagai contoh dari nilai bilangan bulat.
+:::
+
+## Soal 10. Perulangan `for`
+
+Tuliskan kode R untuk menghitung jumlah kuadrat dari 1 sampai 10 menggunakan perulangan `for`. (Petunjuk: hasil akhir adalah 1²+2²+…+10²).
+
+```{r}
+jumlah_no10 <- 0
+for (i in 1:10) {
+  jumlah_no10 <- jumlah_no10 +i^2
+}
+jumlah_no10
+```
+
+## Soal 11. Perulangan `while` untuk Deret Fibonacci
+
+Tuliskan kode R untuk menampilkan 10 suku pertama deret Fibonacci menggunakan perulangan `while`.
+
+```{r}
+d_fibonacci <- c(0, 1)
+i <- 3
+
+while (i <= 10) {
+  d_fibonacci[i] <- d_fibonacci[i-1] + d_fibonacci[i-2]
+  i <- i + 1
+}
+
+d_fibonacci
+```
+
+::: callout-note
+> Perulangan `while` cocok untuk deret Fibonacci karena setiap suku dihitung dari dua suku sebelumnya secara berulang hingga jumlah suku yang diinginkan tercapai.
+:::
+
+## Soal 12. Perulangan `repeat`
+
+Tuliskan kode R untuk mencari bilangan bulat positif terkecil yang jika dipangkatkan 2 menghasilkan nilai lebih dari 200 menggunakan perulangan `repeat`.
+
+```{r}
+no12 <- 1
+repeat {
+  if (no12^2 > 200){
+    break
+  }
+  no12 <- no12 + 1
+}
+
+no12
+```
+
+## Soal 13. Fungsi `if` dan `ifelse` pada Dataframe
+
+Buatlah sebuah program R dengan ketentuan berikut:
+
+- Bentuk sebuah `data.frame` berisi 5 orang dengan kolom `Nama`, `Nilai`.
+
+- Gunakan `ifelse` untuk menambahkan kolom baru bernama `Kategori` dengan aturan:
+
+  \- Nilai ≥ 85 → "A"
+
+  \- Nilai 70–84 → "B"
+
+  \- Nilai \< 70 → "C"
+
+- Hitung rata-rata nilai tiap kategori.
+
+```{r}
+no13 <- data.frame(
+  Nama = c("Abdul", "Bayu", "Celine", "Dimas", "Erlan"),
+  Nilai = c(100, 80, 65, 90, 40)
+)
+
+no13$Kategori <- ifelse(no13$Nilai >= 85, "A",
+                  ifelse(no13$Nilai >=70, "B", "C"))
+no13
+```
+
+Mencari rata-rata nilai per kategori
+
+```{r}
+mean_kategori <- tapply(no13$Nilai, no13$Kategori, mean)
+mean_kategori
+```
+
+::: callout-note
+> Fungsi `tapply()` mengelompokkan `Nilai` berdasarkan `Kategori`, lalu gunakan fungsi `mean` untuk menghitung rata-rata tiap kategori.
+:::

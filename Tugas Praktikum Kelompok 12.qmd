@@ -1,0 +1,438 @@
+---
+title: "Tugas Praktikum Pemrograman Statistika"
+author: "Kelompok 12"
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-title: "Daftar Isi"
+    toc-depth: 3
+    toc-expand: 1
+    number-sections: false
+    theme:
+      dark: darkly
+      light: flatly
+    css: custom.css
+    highlight-style: github
+    code-fold: false
+    code-tools: false
+    smooth-scroll: true
+    fig-align: center
+    linkcolor: "lightgrey"
+    fig-cap-location: bottom
+    df-print: paged
+    embed-resources: true
+    code-copy: true
+    code-overflow: wrap
+    code-block-border-left: "lightgrey"
+editor: visual
+---
+
+::: {.callout-important appearance="minimal" icon="false"}
+Kandi Dwi Pratiwi - X1005261004
+
+Zaid Faidhu Rabbani - M0501261087
+
+Nadira Desiana Noviyanti Margaretha - M0501261043
+:::
+
+```{r}
+library(ggplot2)
+```
+
+<br>
+
+# Soal 1. Pembersihan Data Mahasiswa
+
+## 1.1. Buat Data frame manual dengan nama nilai_raw
+
+1\. Buat data frame bernama `nilai_raw` secara manual di R.
+
+**Tabel 1. Dataset Nilai Mahasiswa**
+
+```{r}
+nilai_raw <- data.frame(
+  Nama = c("Andi", "Budi", "Citra", "Dewi", "Andi"),
+  Matematika = c(80, 90, NA, 75, 80),
+  Statistika = c(85, 88, 78, "-", 85),
+  Umur = c(21, 20, 22, 21, 21)
+)
+
+nilai_raw
+```
+
+```{r}
+str(nilai_raw)
+```
+
+<br>
+
+## 1.2. Identifikasi Missing Value
+
+2\. Identifikasi nilai yang hilang pada dataset secara sistematis. Ubah tanda hubung (`"-"`) pada nilai Statistika milik Dewi menjadi nilai hilang standar R, yaitu `NA.`
+
+```{r}
+is.na(nilai_raw)
+```
+
+```{r}
+sum(is.na(nilai_raw))
+```
+
+```{r}
+nilai_raw$Statistika[nilai_raw$Statistika == "-"] <- NA
+nilai_raw$Statistika <- as.numeric(nilai_raw$Statistika)
+str(nilai_raw)
+```
+
+Setelah mengubah tanda hubung `"-"` menjadi nilai `NA`, agar memudahkan dalam melakukan imputasi, kita mengubah tipe data untuk kolom `'Statistika'` dari yang awalnya `char` menjadi `num`.
+
+<br>
+
+## 1.3. Imputasi Missing Value dengan Nilai Mean
+
+3\. Lakukan imputasi terhadap nilai `Statistika` yang kosong menggunakan rata-rata nilai Statistika mahasiswa lainnya yang tersedia.
+
+```{r}
+nilai_raw$Statistika[is.na(nilai_raw$Statistika)] <- mean(nilai_raw$Statistika, na.rm = TRUE )
+nilai_raw$Matematika[is.na(nilai_raw$Matematika)] <- mean(nilai_raw$Matematika, na.rm = TRUE )
+
+nilai_raw
+```
+
+Kami juga mengimputasi nilai Matematika yang kosong menggunakan rata-rata nilai Matematika mahasiswa lainnya yang tersedia.
+
+<br>
+
+## 1.4. Penambahan Kolom Baru bernama Status_Umur
+
+4\. Buat kolom baru bernama `Status_Umur` menggunakan fungsi `ifelse()` dengan ketentuan:\
+`Dewasa` jika umur ≥ 21 tahun;\
+`Muda` jika umur \< 21 tahun.
+
+```{r}
+nilai_raw$Status_Umur <- ifelse(nilai_raw$Umur >= 21, "Dewasa", "Muda")
+
+nilai_raw
+```
+
+<br>
+
+## 1.5. Identifikasi dan Penanganan Pengamatan Duplikat
+
+5\. Identifikasi dan hapus baris pengamatan yang duplikat.
+
+```{r}
+duplicated(nilai_raw)
+```
+
+Selanjutnya, kita menghapus baris yang duplikat tersebut menggunakan fungsi `unique()`.
+
+```{r}
+nilai_raw <- unique(nilai_raw)
+
+nilai_raw
+```
+
+<br>
+
+## 1.6. Simpan Dataset Akhir dengan Format .csv
+
+6\. Simpan dataset yang telah dibersihkan ke dalam file bernama **`nilai_bersih.csv`**.
+
+```{r}
+write.csv(nilai_raw, "nilai_bersih.csv")
+```
+
+<br>
+
+# Soal 2. Subsetting dan Pengurutan Multikriteria
+
+## 2.1. Buat Dataframe dengan Nama profil
+
+1\. Buat data frame bernama `profil` secara manual di R
+
+```{r}
+profil <- data.frame(
+  No = 1:10,
+  gender = c("f", "f", "f", "m", "m", "f", "m", "m", "f", "m"),
+  v1  = c(8, 15, 8, 14, 8, 10, 9, 9, 10, 12),
+  v2  = c(9, 8, 13, 9, 2, 6, 9, 10, 13, 10),
+  v3  = c(5, 9, 12, 8, 9, 10, 7, 8, 6, 9),
+  v4  = c(9, 5, 6, NA, 16, 9, 13, 10, 7, 8),
+  v5  = c(9, 10, 7, 11, 8, 10, 9, 5, 10, 17),
+  v6  = c(9, 8, 9, 10, 10, 10, 12, 10, 12, 7),
+  v7  = c(5, 10, 14, 6, 8, 9, 10, 6, 13, 9),
+  v8  = c(9, 12, 12, 11, 9, 7, 9, 12, 9, 10),
+  v9  = c(11, 9, 12, 11, 8, 7, 11, 6, 6, 7),
+  v10 = c(8, 15, 9, 8, 9, 11, 7, 8, 9, 7)
+)
+
+profil
+```
+
+<br>
+
+## 2.2. Penyaringan (Subsetting) Data
+
+2\. Lakukan penyaringan (subsetting) sehingga hanya menyisakan pengamatan yang memenuhi salah satu kondisi berikut:\
+gender laki-laki `(m)` dan `v1 > 9` ; atau\
+gender perempuan `(f)` dan `v3 <= 10`.
+
+```{r}
+newvec <- (profil$gender=="m" & profil$v1 > 9 | profil$gender=="f" & profil$v3 <= 10)
+profil <- profil[newvec,]
+
+profil
+```
+
+<br>
+
+## 2.3. Mengurutkan Data
+
+3\. Urutkan data hasil penyaringan secara multikriteria, dengan ketentuan:\
+`gender` diurutkan secara *descending*;\
+untuk pengamatan dengan `gender` yang sama, `v5` diurutkan secara *ascending*.
+
+```{r}
+profil$gender <- factor(profil$gender, levels = c("m", "f"))
+cond1  <- order(profil$gender, profil$v5)
+profil <- profil[cond1,]
+
+profil
+```
+
+<br>
+
+## 2.4. Menyimpan Dataset Akhir dalam Format .csv
+
+4\. Simpan hasil akhir ke dalam file bernama **`profil_filter.csv`**.
+
+```{r}
+write.csv(profil, "profil_filter.csv")
+```
+
+<br>
+
+# Soal 3. Penggabungan dan Reshaping Data
+
+```{r}
+df_sales <- data.frame(
+  id_toko = c("T1", "T2", "T3"),
+  Minggu1 = c(120, 150, 95),
+  Minggu2 = c(135, 140, 110)
+)
+
+df_sales
+```
+
+```{r}
+df_info <- data.frame(
+  id = c("T1", "T2", "T4"),
+  Kota = c("Jakarta", "Bandung", "Surabaya")
+)
+
+df_info
+```
+
+<br>
+
+## 3.1. Menggabungkan Data menggunakan Fungsi merge()
+
+1\. Gabungkan `df_sales` dan `df_info` menggunakan fungsi `merge()` dengan metode Full Outer Join, sehingga seluruh toko dari kedua data frame tetap disertakan.\
+Perhatikan bahwa nama variabel kunci pada kedua data frame berbeda, yaitu `id_toko` pada `df_sales` dan `id` pada `df_info`. Gunakan argumen penggabungan yang sesuai.
+
+```{r}
+data_gabungan <- merge(df_sales, df_info, by.x = "id_toko", by.y = "id", all = TRUE)
+
+data_gabungan
+```
+
+<br>
+
+## 3.2. Mengubah Struktur Tabel Format Wide menjadi Long
+
+2\. Ubah struktur data hasil penggabungan dari format Wide menjadi Long, sehingga:\
+`Minggu1` dan `Minggu2` digabung menjadi satu kolom bernama `Waktu`;\
+nilai penjualan disimpan dalam satu kolom bernama `Penjualan`.
+
+```{r}
+data_long <- reshape(data_gabungan,
+                     v.names = "Penjualan",
+                     varying = c("Minggu1","Minggu2"),
+                     timevar = "Waktu",
+                     times = c("Minggu 1", "Minggu 2"),
+                     idvar = "id_toko",
+                     direction = "long")
+rownames(data_long)<- NULL
+
+data_long
+```
+
+<br>
+
+## 3.3. Menyimpan Dataset Akhir dalam Format .csv
+
+3\. Simpan dataset dalam format Long tersebut ke dalam file bernama **`penjualan_long.csv`**.
+
+```{r}
+write.csv(data_long, "penjualan_long.csv")
+```
+
+<br>
+
+# Soal 4. Eksplorasi Visual
+
+Gunakan dataset bawaan R `CO2` untuk mengeksplorasi hubungan antara konsentrasi karbon dioksida (`conc`) dan tingkat penyerapan karbon dioksida (`uptake`) pada tanaman.
+
+<br>
+
+## 4.1. Penggunaan Dataset CO2 yang Ada pada R Studio
+
+1\. Kenali struktur dataset `CO2` dan identifikasi peran peubah `Plant`, `Type`, `Treatment`, `conc`, dan `uptake`, kemudian buat grafik menggunakan base R untuk menunjukkan hubungan `conc` dan `uptake` dengan mengatur bentuk dan ukuran titik, warna, judul, label sumbu, serta rentang sumbu, lalu tambahkan minimal dua elemen grafik menggunakan `points()`, `lines()`, `abline()`, atau `text()`.
+
+```{r}
+data2 <- CO2
+str(data2)
+summary(data2)
+head(data2)
+```
+
+```{r}
+plot(data2$conc, data2$uptake,
+     pch = 19,
+     cex=0.75, 
+     col="grey", 
+     xlim=c(95,1000), 
+     ylim=c(7,50),
+     main="Grafik 1. Hubungan Peubah Conc dan Uptake", 
+     sub="Sumber: Dataset CO2, R Statistical Computing Environment", 
+     xlab="Conc", 
+     ylab="Uptake"
+)
+abline (abline(lm(uptake ~ conc, data = data2)),lty=3)
+text(870,40,"uptake=19,5+0,018conc")
+```
+
+<br>
+
+## 4.2. Tampilan Grafik Boxplot dan Barplot
+
+2\. Buat satu tampilan grafik berukuran **2 × 2** yang terdiri atas empat jenis visualisasi berbeda untuk mengeksplorasi `conc`, `uptake`, `Type`, dan `Treatment`; tentukan sendiri jenis grafik yang paling sesuai dan berikan judul yang jelas pada setiap grafik.
+
+```{r}
+par(mfrow = c(2,2),
+    mar = c(4, 4, 3, 2))
+
+freq_type <- table(data2$Type)
+freq_treatment <- table(data2$Treatment)
+
+boxplot(data2$conc,
+        main = "Distribusi Peubah Conc",
+        ylab = "Concentration",
+        col = "lightgrey",
+        border = "black"
+        )
+hist(data2$uptake,probability = TRUE,
+        main = "Distribusi Peubah Uptake",
+        xlab = "Uptake",
+        col = "grey",
+        border = "black"
+        )
+lines(density(data2$uptake),lwd=2)
+barplot(freq_type,
+        main = "Distribusi Peubah Type",
+        xlab = "Type",
+        ylab = "Frekuensi",
+        col = c("skyblue", "blue"),
+        border = "black"
+        )
+pie(freq_treatment,
+        main = "Distribusi Peubah Treatment",
+        xlab = "Treatment",
+        ylab = "Frekuensi",
+        col = c("green", "grey"),
+        border = "black",
+        radius=1.1
+)
+```
+
+<br>
+
+## 4.3. Penggunaan Fungsi qplot()
+
+3\. Gunakan `qplot()` untuk membuat visualisasi cepat hubungan `conc` dan `uptake` berdasarkan `Treatment`, kemudian buat kembali visualisasi tersebut menggunakan `ggplot2` dengan memetakan `Treatment` dan `Type` ke **atribut visual yang berbeda** di dalam `aes()` serta menggunakan `geom_*` yang sesuai.
+
+```{r}
+qplot(x = conc,
+      y = uptake,
+      data = CO2,
+      color = Treatment,
+      shape = Treatment,
+      main = "Hubungan Peubah 'Conc' dan 'Uptake' Berdasarkan Treatment"
+      )
+```
+
+```{r}
+ggplot(data = data2,
+       aes(x = conc,
+           y = uptake,
+           color = Type,
+           shape = Treatment))+
+  labs(title = "Hubungan Peubah 'Conc' dan 'Uptake' Berdasarkan Treatment dan Type")+
+  geom_point()
+```
+
+<br>
+
+## 4.4. Pengembangan Grafik menggunakan Fungsi ggplot()
+
+4\. Kembangkan grafik `ggplot2` tersebut dengan menambahkan minimal satu `stat_*`, satu `scale_*`, serta salah satu `coord_*`, kemudian lengkapi grafik menggunakan `labs()` dan `theme()` atau salah satu tema siap pakai agar grafik lebih informatif dan mudah dibaca.
+
+```{r}
+ggplot(data = data2,
+       aes(x = conc,
+           y = uptake,
+           color = Type,
+           shape = Treatment)) +
+  geom_point(size = 1.2, alpha = 0.8) +
+  # stat_*
+  stat_smooth(method = "lm", se = TRUE, alpha = 0.15, linewidth = 0.5) +
+  # scale_*
+  scale_color_brewer(palette = "Set2") +
+  scale_shape_manual(values = c("chilled" = 17, "nonchilled" = 19)) +
+  # coord_*
+  coord_cartesian(xlim = c(0, 1100), ylim = c(0, 55)) +
+  facet_wrap(~ Treatment)+
+  labs(title = "Hubungan Peubah Concentration dan Uptake",
+       subtitle = "Berdasarkan Type dan Treatment",
+       x = "Concentration",
+       y = "Uptake",
+       color = "Type",
+       shape = "Treatment") +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(color = "lightgrey"),
+    legend.position = "right"
+  )
+```
+
+<br>
+
+## 4.5. Menyimpan Grafik menggunakan Fungsi ggsave()
+
+5\. Simpan grafik akhir menggunakan `ggsave()` dalam format PNG dengan nama **`co2_uptake_visualisasi.png`**, kemudian tuliskan interpretasi mengenai hubungan antara konsentrasi CO₂ dan `uptake` serta perbedaan pola yang terlihat berdasarkan `Type` dan `Treatment`.
+
+```{r}
+ggsave("co2_uptake_visualisasi.png",
+       width = 7,
+       height = 5,
+       dpi = 300)
+```
+
+::: {.callout-note appearance="minimal" icon="false"}
+Interpretasi:
+
+Berdasarkan grafik tersebut, terdapat hubungan positif antara peubah konsentrasi CO2 dan peubah uptake. Artinya, semakin tinggi konsentrasi CO2, maka semakin tinggi pula nilai uptake dan semakin rendah konsentrasi CO2, maka semakin rendah pula nilai uptake . Hal ini tercermin dari kemiringan garis regresi yang positif pada masing-masing tipe (baik pada kondisi chilled maupun nonchilled). Pada Type Quebec, nilai uptake cenderung lebih tinggi dibandingkan Mississippi pada konsentrasi CO2 yang sama. Treatment chilled juga memperlihatkan pola yang berbeda antara kedua jenis tipe, dengan Quebec tetap menunjukkan respons positif yang cukup kuat sementara Mississippi memiliki tingkat uptake yang lebih rendah.
+:::

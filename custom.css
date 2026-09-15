@@ -1,0 +1,107 @@
+/* ===================================================== */
+/* ===== custom.css — Tugas Mandiri Praktikum 3 ===== */
+/* ===================================================== */
+
+/* ---------- TEKS PARAGRAF: RATA KIRI-KANAN (JUSTIFY) ---------- */
+#quarto-document-content p,
+main p {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
+/* ---------- DAFTAR ISI (TOC) - MODE TERANG (default) ---------- */
+#TOC a,
+.sidebar-navigation a,
+nav[role="doc-toc"] a {
+  color: #7c7c7c;
+  display: inline-block;
+  padding: 3px 0 3px 10px;
+  border-left: 2px solid transparent;
+  transition: transform 0.2s ease, color 0.2s ease,
+              font-weight 0.2s ease, border-left-color 0.25s ease,
+              background-color 0.25s ease;
+  transform-origin: left center;
+}
+
+/* Efek zoom + warna saat hover di TOC */
+#TOC a:hover,
+.sidebar-navigation a:hover,
+nav[role="doc-toc"] a:hover {
+  transform: scale(1.12);
+  color: lightgrey !important;
+  font-weight: 600;
+}
+
+/* Section yang SEDANG dibaca (auto-highlight saat scroll) */
+#TOC a.active,
+.sidebar-navigation a.active,
+nav[role="doc-toc"] a.active {
+  color: white !important;
+  font-weight: 800;
+  border-left-color: #5c5c5c;
+  background-color: rgba(92, 92, 92, 0.06);
+  border-radius: 0 4px 4px 0;
+}
+
+/* Kalau active DAN sedang di-hover bersamaan */
+#TOC a.active:hover,
+.sidebar-navigation a.active:hover,
+nav[role="doc-toc"] a.active:hover {
+  transform: scale(1.12);
+  background-color: rgba(92, 92, 92, 0.1);
+}
+
+/* ---------- GAMBAR ---------- */
+img {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* ---------- HEADING ---------- */
+h1, h2, h3 {
+  letter-spacing: -0.01em;
+}
+
+/* ===================================================== */
+/* ===================== MODE GELAP ===================== */
+/* ===================================================== */
+
+[data-bs-theme="dark"] #TOC a,
+[data-bs-theme="dark"] .sidebar-navigation a,
+[data-bs-theme="dark"] nav[role="doc-toc"] a {
+  color: lightgrey;
+}
+
+[data-bs-theme="dark"] #TOC a:hover,
+[data-bs-theme="dark"] .sidebar-navigation a:hover,
+[data-bs-theme="dark"] nav[role="doc-toc"] a:hover {
+  color: #ffffff !important;
+}
+
+[data-bs-theme="dark"] #TOC a.active,
+[data-bs-theme="dark"] .sidebar-navigation a.active,
+[data-bs-theme="dark"] nav[role="doc-toc"] a.active {
+  color: #ffffff !important;
+  border-left-color: #cccccc;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-bs-theme="dark"] .sourceCode,
+[data-bs-theme="dark"] pre.sourceCode,
+[data-bs-theme="dark"] div.sourceCode {
+  background-color: #2b2b2b !important;
+  color: #e0e0e0 !important;
+}
+
+[data-bs-theme="dark"] img {
+  box-shadow: 0 2px 8px rgba(255,255,255,0.06);
+}
+
+/* ---------- TABEL / DATAFRAME: TEKS RATA TENGAH ---------- */
+table, 
+table th, 
+table td {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
