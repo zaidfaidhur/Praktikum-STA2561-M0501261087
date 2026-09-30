@@ -1,0 +1,158 @@
+---
+title: "Latihan Praktikum Pekan 6"
+author: "Zaid Faidhu Rabbani - M0501261087"
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-title: "Daftar Isi"
+    toc-depth: 3
+    number-sections: false
+    theme: flatly
+    css: custom.css
+    highlight-style: github
+    code-fold: false
+    code-tools: false
+    smooth-scroll: true
+    fig-align: center
+    fig-cap-location: bottom
+    df-print: paged
+    embed-resources: true
+    toc-expand: 1
+    code-copy: true
+    code-overflow: wrap
+    fig-width: 7
+    fig-height: 5
+editor: visual
+---
+
+## 1. Buat Fungsi `range_data()`
+
+$$R=max(x)-min(x)$$
+
+Gunakan data
+
+`x <- c(10,12,15,18,20)`
+
+```{r}
+range_data <- function(x) {
+  rentang = max(x)-min(x)
+  return(rentang)
+}
+
+x <- c(10, 12, 15, 18, 20)
+range_data(x)
+```
+
+## 2. Buat Fungsi `nilai_tengah()`
+
+Menghitung nilai tengah antara nilai minimum dan maksimum
+
+$$T= max(x)+min(x)/2   $$
+
+```{r}
+nilai_tengah <- function(x){
+  t = (max(x)+min(x))/2
+  return(t)
+}
+
+x <- c(8, 12, 15, 20, 25)
+nilai_tengah(x)
+```
+
+## 3. Buat Fungsi `cv_data()`
+
+```{r}
+cv_data <- function(x, na.rm = FALSE){
+  cv = (sd(x, na.rm = na.rm)/mean(x, na.rm = na.rm))*100
+  return(cv)
+}
+
+x <- c(10, 15, NA, 20, 25)
+
+a <- cv_data(x)
+b <- cv_data(x, na.rm = TRUE)
+
+a
+b
+```
+
+## 4. Buat Fungsi `ringkasan_data()`
+
+```{r}
+ringkasan_data <- function(x,...) {
+  list(
+    "mean" = mean(x, ...),
+    "std.dev" = sd(x, ...),
+    "minimum" = min(x, ...),
+    "maximum" = max(x, ...)
+  )
+}
+
+x <- c(10, 15, NA, 20, 25, 30)
+ringkasan_data(x, na.rm = TRUE)
+
+```
+
+## 5. Gunakan fungsi `tryCatch()`
+
+```{r}
+data_list <- list(
+  A = c(5, 10, 15),
+  B = c(20, 25, 30),
+  C = "data salah",
+  D = c(35, 40, 45)
+)
+
+safe_sd <- function(x) {
+  tryCatch(
+    sd(x),
+    error = function(e) NA
+  )
+}
+
+lapply(data_list, safe_sd)
+```
+
+- **Kelompok mana yang menghasilkan `NA`?**
+
+> Kelompok yang menghasilkan nilai `NA` adalah kelompok `c`, karena isi dari kelompok `c` berupa string, bukan angka, sehingga standar deviasi gagal dihitung
+
+- **Mengapa kelompok lain tetap dapat diproses?**
+
+> Kelompok yang lain tetap diproses karena isinya berupa vektor numerik yang valid, jadi standar deviasi tetap dapat dihitung tanpa eror
+
+- **Apa fungsi `tryCatch()` pada contoh tersebut?**
+
+> `tryCatch()` berfungsi sebagai penanganan eror dalam menjadi `sd(x)`, jika berhasil maka nilai dikembalikan sesuai, namun jika terjadi eror dalam menjalankan `sd(x)`, program tetap berjalan, namun nilai yang dikembalikan adalah `NA`.
+
+## 6. Buat fungsi `buat_penambah()`
+
+```{r}
+buat_penambah <- function(k) {
+  function(x) {
+    x + k
+  }
+}
+
+tambah5 <- buat_penambah(5)
+tambah10 <- buat_penambah(10)
+
+a <- tambah5(20)
+b <- tambah10(20)
+
+a
+b
+```
+
+- **Berapa hasil `tambah5(20)` dan `tambah10(20)`?**
+
+> `tambah5(20) = 25` dan `tambah10(20) = 30`
+
+- **Mengapa `tambah5()` masih mengetahui bahwa nilai `k = 5`?**
+
+> Karena saat `tambah5 <- buat_penambah(5)` dijalankan, fungsi yang dihasilkan **menyimpan** nilai `k = 5` di "memorinya sendiri". Jadi walaupun `buat_penambah()` sudah selesai dijalankan, `tambah5` tetap ingat bahwa `k`-nya adalah 5. Begitu juga `tambah10` punya memori sendiri dengan `k = 10`. Keduanya tidak saling tertukar.
+
+- **Konsep apa yang menjelaskan kemampuan fungsi tersebut untuk tetap mengingat nilai `k`?**
+
+> Konsepnya disebut closure, dimana merupakan kemampuan sebuah fungsi untuk "mengingat" nilai variabel dari lingkungan tempat ia dibuat, meskipun fungsi luarnya sudah selesai dijalankan.

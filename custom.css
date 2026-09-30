@@ -2,106 +2,212 @@
 /* ===== custom.css — Tugas Mandiri Praktikum 3 ===== */
 /* ===================================================== */
 
-/* ---------- TEKS PARAGRAF: RATA KIRI-KANAN (JUSTIFY) ---------- */
+/* =================== 1. DESIGN TOKENS =================== */
+
+:root {
+  --bg-page:        #ffffff;
+  --bg-surface:     #f6f8fa;
+  --bg-surface-2:   #eef0f2;
+  --border-soft:    #e1e4e8;
+  --border-strong:  #c9ccd1;
+  --text-main:      #1f2328;
+  --text-muted:     #6a6a6a;
+  --text-code:      #c7254e;
+  --accent:         #5c5c5c;
+  --accent-strong:  #2f2f2f;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* =================== 2. BASE / LAYOUT =================== */
+
+body { background-color: var(--bg-page); color: var(--text-main); }
+
+a { color: var(--accent); }
+a:hover { color: var(--accent-strong); text-decoration: underline; }
+
 #quarto-document-content p,
 main p {
   text-align: justify;
   text-justify: inter-word;
   hyphens: auto;
+  line-height: 1.65;
+  font-size: 1.02rem;
+  color: var(--text-main);
 }
 
-/* ---------- DAFTAR ISI (TOC) - MODE TERANG (default) ---------- */
+/* =================== 3. HEADING =================== */
+
+h1, h2, h3 { letter-spacing: -0.01em; scroll-margin-top: 80px; color: var(--text-main); }
+h4 { scroll-margin-top: 80px; }
+
+h1 {
+  border-bottom: 2px solid var(--border-soft);
+  padding-bottom: 0.3em;
+  margin-bottom: 0.6em;
+}
+
+/* =================== 4. DAFTAR ISI (TOC) =================== */
+
 #TOC a,
 .sidebar-navigation a,
 nav[role="doc-toc"] a {
-  color: #7c7c7c;
+  color: var(--text-muted);
   display: inline-block;
   padding: 3px 0 3px 10px;
   border-left: 2px solid transparent;
+  border-radius: 0 4px 4px 0;
+  background-color: transparent;
   transition: transform 0.2s ease, color 0.2s ease,
               font-weight 0.2s ease, border-left-color 0.25s ease,
               background-color 0.25s ease;
   transform-origin: left center;
 }
 
-/* Efek zoom + warna saat hover di TOC */
 #TOC a:hover,
 .sidebar-navigation a:hover,
 nav[role="doc-toc"] a:hover {
-  transform: scale(1.12);
-  color: lightgrey !important;
+  transform: scale(1.08);
+  color: var(--accent-strong) !important;
   font-weight: 600;
+  background-color: rgba(128,128,128,0.08);
 }
 
-/* Section yang SEDANG dibaca (auto-highlight saat scroll) */
 #TOC a.active,
 .sidebar-navigation a.active,
 nav[role="doc-toc"] a.active {
-  color: white !important;
+  color: var(--accent-strong) !important;
   font-weight: 800;
-  border-left-color: #5c5c5c;
-  background-color: rgba(92, 92, 92, 0.06);
-  border-radius: 0 4px 4px 0;
+  border-left-color: var(--accent);
+  background-color: rgba(128,128,128,0.12);
 }
 
-/* Kalau active DAN sedang di-hover bersamaan */
 #TOC a.active:hover,
 .sidebar-navigation a.active:hover,
 nav[role="doc-toc"] a.active:hover {
-  transform: scale(1.12);
-  background-color: rgba(92, 92, 92, 0.1);
+  transform: scale(1.08);
+  background-color: rgba(128,128,128,0.18);
 }
 
-/* ---------- GAMBAR ---------- */
-img {
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+/* Inline code di dalam link TOC — jangan biarkan jadi kotak putih sendiri */
+#TOC a code,
+.sidebar-navigation a code,
+nav[role="doc-toc"] a code {
+  background-color: transparent !important;
+  color: inherit !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 0.92em;
 }
 
-/* ---------- HEADING ---------- */
-h1, h2, h3 {
-  letter-spacing: -0.01em;
+/* =================== 5. INLINE CODE (di teks/heading) =================== */
+
+p code, li code, td code, span code,
+h1 code, h2 code, h3 code, h4 code,
+.callout code {
+  background-color: var(--bg-surface-2);
+  color: var(--text-code);
+  padding: 0.15em 0.45em;
+  border-radius: 4px;
+  font-size: 0.85em;
+  border: 1px solid var(--border-soft);
 }
 
-/* ===================================================== */
-/* ===================== MODE GELAP ===================== */
-/* ===================================================== */
+/* =================== 6. CODE BLOCK (chunk) =================== */
+/* Selector dibuat sangat spesifik + !important agar menang       */
+/* melawan style bawaan skema highlight-style (github)            */
+/* yang disisipkan Pandoc dan punya background sendiri.           */
 
-[data-bs-theme="dark"] #TOC a,
-[data-bs-theme="dark"] .sidebar-navigation a,
-[data-bs-theme="dark"] nav[role="doc-toc"] a {
-  color: lightgrey;
+.sourceCode,
+pre.sourceCode,
+div.sourceCode,
+div.sourceCode pre.sourceCode,
+div.sourceCode > pre {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border-soft) !important;
+  border-left: 4px solid var(--accent) !important;
+  border-radius: 0 8px 8px 0 !important;
+  padding: 0.9em 1.1em !important;
+  box-shadow: var(--shadow);
 }
 
-[data-bs-theme="dark"] #TOC a:hover,
-[data-bs-theme="dark"] .sidebar-navigation a:hover,
-[data-bs-theme="dark"] nav[role="doc-toc"] a:hover {
-  color: #ffffff !important;
+pre code {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background-color: transparent !important;
 }
 
-[data-bs-theme="dark"] #TOC a.active,
-[data-bs-theme="dark"] .sidebar-navigation a.active,
-[data-bs-theme="dark"] nav[role="doc-toc"] a.active {
-  color: #ffffff !important;
-  border-left-color: #cccccc;
-  background-color: rgba(255, 255, 255, 0.08);
+/* Output hasil eksekusi (console) — dibedakan dari input code */
+pre.cell-output,
+pre.output {
+  background-color: var(--bg-page) !important;
+  color: var(--text-muted) !important;
+  border: 1px dashed var(--border-strong) !important;
+  border-radius: 6px;
+  padding: 0.7em 1em;
 }
 
-[data-bs-theme="dark"] .sourceCode,
-[data-bs-theme="dark"] pre.sourceCode,
-[data-bs-theme="dark"] div.sourceCode {
-  background-color: #2b2b2b !important;
-  color: #e0e0e0 !important;
+/* Tombol copy */
+.sourceCode .code-copy-button {
+  opacity: 0.45;
+  transition: opacity 0.2s ease;
+  color: var(--text-muted);
 }
+.sourceCode:hover .code-copy-button { opacity: 1; }
 
-[data-bs-theme="dark"] img {
-  box-shadow: 0 2px 8px rgba(255,255,255,0.06);
-}
+/* =================== 7. TABEL / DATAFRAME =================== */
 
-/* ---------- TABEL / DATAFRAME: TEKS RATA TENGAH ---------- */
-table, 
-table th, 
-table td {
+table, table th, table td {
   text-align: center !important;
   vertical-align: middle !important;
+  color: var(--text-main);
+  border-color: var(--border-soft) !important;
+}
+
+table.dataTable tbody tr {
+  background-color: var(--bg-page);
+}
+table.dataTable tbody tr:hover {
+  background-color: var(--bg-surface-2);
+}
+
+.dataTables_wrapper,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+  color: var(--text-muted);
+}
+
+/* =================== 8. BLOCKQUOTE =================== */
+
+blockquote {
+  border-left: 4px solid var(--accent);
+  padding-left: 1em;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* =================== 9. GAMBAR & CAPTION =================== */
+
+img {
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+figcaption, .figure-caption {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+  text-align: center;
+  margin-top: 0.4em;
+}
+
+/* =================== 10. SCROLLBAR =================== */
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-thumb {
+  background-color: rgba(128,128,128,0.4);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(128,128,128,0.6);
 }
